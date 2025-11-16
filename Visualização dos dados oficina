@@ -1,0 +1,45 @@
+use oficina;
+-- Quantos serviços foram realizados por cada funcionário?
+SELECT f.nome, COUNT(*) AS total_servicos FROM funcionario f
+	JOIN os_servico os ON f.idFuncionario = os.idFuncionario
+	GROUP BY f.idFuncionario;
+
+-- 🔹 Quais peças estão com estoque abaixo de 10 unidades?
+
+SELECT nome, estoque FROM peca
+			WHERE estoque < 10;
+
+-- Valor total estimado de cada ordem de serviço (serviços + peças)
+
+SELECT os.idOS, SUM(s.preco) + SUM(p.preco * op.quantidade) AS valor_total
+	FROM ordem_servico os
+		JOIN os_servico oss ON os.idOS = oss.idOS
+		JOIN servico s ON oss.idServico = s.idServico
+		JOIN os_peca op ON os.idOS = op.idOS
+		JOIN peca p ON op.idPeca = p.idPeca
+GROUP BY os.idOS;
+
+-- Clientes com mais de uma ordem de serviço
+
+SELECT c.nome, COUNT(os.idOS) AS total_os FROM cliente c
+		JOIN veiculo v ON c.idCliente = v.idCliente
+		JOIN ordem_servico os ON v.idVeiculo = os.idVeiculo
+			GROUP BY c.idCliente
+HAVING total_os > 1;
+
+-- 🔹 Lista de ordens com status e data, ordenadas por mais recentes
+
+SELECT os.idOS, os.status, os.data, v.placa, c.nome FROM ordem_servico os
+	JOIN veiculo v ON os.idVeiculo = v.idVeiculo
+		JOIN cliente c ON v.idCliente = c.idCliente
+ORDER BY os.data DESC;
+
+-- Valor total estimado de cada ordem de serviço
+
+SELECT os.idOS, SUM(s.preco) + SUM(p.preco * op.quantidade) AS valor_total
+			FROM ordem_servico os
+			JOIN os_servico oss ON os.idOS = oss.idOS
+			JOIN servico s ON oss.idServico = s.idServico
+			JOIN os_peca op ON os.idOS = op.idOS
+			JOIN peca p ON op.idPeca = p.idPeca
+		GROUP BY os.idOS;
