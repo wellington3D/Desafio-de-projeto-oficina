@@ -1,0 +1,74 @@
+use oficina;
+-- drop table cliente; 
+CREATE TABLE cliente (
+				idCliente INT AUTO_INCREMENT PRIMARY KEY,
+				nome VARCHAR(100) NOT NULL,
+				telefone CHAR(11),
+				email VARCHAR(100),
+				cpf CHAR(11) UNIQUE
+);
+-- drop table veiculo; 
+CREATE TABLE veiculo (
+			idVeiculo INT AUTO_INCREMENT PRIMARY KEY,
+			idCliente INT,
+			placa VARCHAR(10) UNIQUE,
+			modelo VARCHAR(50),
+			ano INT,
+			FOREIGN KEY (idCliente) REFERENCES cliente(idCliente)
+			ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- drop table funcionario;
+CREATE TABLE funcionario (
+			idFuncionario INT AUTO_INCREMENT PRIMARY KEY,
+			nome VARCHAR(100),
+			cargo VARCHAR(50),
+			telefone CHAR(11)
+);
+-- drop table servico;
+CREATE TABLE servico (
+			idServico INT AUTO_INCREMENT PRIMARY KEY,
+			descricao VARCHAR(255),
+			preco DECIMAL(10,2)
+);
+-- drop table peca;
+CREATE TABLE peca (
+			idPeca INT AUTO_INCREMENT PRIMARY KEY,
+			nome VARCHAR(100),
+			preco DECIMAL(10,2),
+			estoque INT
+);
+-- drop table ordem_servico;
+CREATE TABLE ordem_servico (
+			idOS INT AUTO_INCREMENT PRIMARY KEY,
+			idVeiculo INT,
+    data DATE,
+		status ENUM('Aberta','Em andamento','Finalizada') DEFAULT 'Aberta',
+		FOREIGN KEY (idVeiculo) REFERENCES veiculo(idVeiculo)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- drop table os_servico;
+CREATE TABLE os_servico (
+			idOS INT,
+			idServico INT,
+			idFuncionario INT,
+	PRIMARY KEY (idOS, idServico),
+    FOREIGN KEY (idOS) REFERENCES ordem_servico(idOS)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (idServico) REFERENCES servico(idServico)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (idFuncionario) REFERENCES funcionario(idFuncionario)
+        ON DELETE SET NULL ON UPDATE CASCADE
+);
+-- drop table os_peca; 
+CREATE TABLE os_peca (
+			idOS INT,
+			idPeca INT,
+			quantidade INT,
+		PRIMARY KEY (idOS, idPeca),
+		FOREIGN KEY (idOS) REFERENCES ordem_servico(idOS)
+			ON DELETE CASCADE ON UPDATE CASCADE,
+		FOREIGN KEY (idPeca) REFERENCES peca(idPeca)
+			ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+show tables;
