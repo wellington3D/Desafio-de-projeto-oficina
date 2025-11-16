@@ -1,0 +1,68 @@
+use oficina;
+-- Clientes
+desc cliente;
+INSERT INTO cliente (nome, telefone, email, cpf) VALUES
+			('João Silva', '11999999999', 'joao@email.com', '12345678901'),
+			('Maria Souza', '11988888888', 'maria@email.com', '98765432100');
+            
+select * from cliente;
+
+-- Veículos
+desc veiculo;
+INSERT INTO veiculo (idCliente, placa, modelo, ano) VALUES
+				(1, 'ABC1234', 'Civic', 2018),
+				(2, 'XYZ5678', 'Corolla', 2020);
+
+select * from veiculo;
+
+-- Funcionários
+desc funcionario;
+INSERT INTO funcionario (nome, cargo, telefone) VALUES
+			('Carlos Mecânico', 'Mecânico', '11977777777'),
+			('Fernanda Técnica', 'Técnica', '11966666666');
+
+select * from funcionario;
+
+-- Serviços
+desc servico;
+INSERT INTO servico (descricao, preco) VALUES
+			('Troca de óleo', 150.00),
+			('Alinhamento', 100.00),
+			('Revisão completa', 300.00);
+
+select * from servico;
+
+-- Peças
+desc peca;
+INSERT INTO peca (nome, preco, estoque) VALUES
+			('Filtro de óleo', 50.00, 20),
+			('Pneu 175/65', 250.00, 10),
+			('Pastilha de freio', 120.00, 15);
+
+select * from peca;
+
+-- Ordem de Serviço
+desc ordem_servico;
+INSERT INTO ordem_servico (idVeiculo, data, status) VALUES
+					(1, '2025-11-10', 'Finalizada'),
+					(2, '2025-11-12', 'Em andamento');
+
+select * from ordem_servico;
+
+-- Serviços realizados
+desc os_servico;
+INSERT INTO os_servico VALUES
+					(1, 1, 1),
+					(1, 2, 2),
+					(2, 3, 1);
+
+select * from os_servico;
+
+-- Peças utilizadas
+desc os_peca;
+INSERT INTO os_peca VALUES
+				(1, 1, 1),
+				(1, 2, 2),
+				(2, 3, 1);
+
+select * from os_peca;
